@@ -99,7 +99,7 @@ var produceCircle = function() {
 
 $(document).ready(function() {
 
-  var intervalId = setInterval(produceCircle, 1000);
+  var intervalId = setInterval(produceCircle, 2000);
   dataRef.update({userInterrupt: false, userStart: false});
   var cnt = 0;
   var beepAudio = document.getElementsByTagName('audio')[0];
