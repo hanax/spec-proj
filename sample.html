@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Starting your carrrr</title>
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
+
+<style>
+body {
+  background-color: #000;
+  margin: 0;
+}
+
+.block {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  float: left;
+}
+
+.circle {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0 auto;
+  animation: mover 2s linear infinite;
+  width: 220px;
+  height: 220px;
+  background-color: rgba(255,255,255,.5);
+  border-radius: 50%;
+}
+
+.target {
+  position: absolute;
+  left: 50%;
+  top: 60%;
+  transform: translate(-50%, -50%);
+  margin: 0 auto;
+  width: 200px;
+  height: 200px;
+  /*background-color: rgba(255,255,255,.5);*/
+  border: 3px solid rgba(255,255,255,.8);
+  border-radius: 50%;
+}
+
+.wrapper {
+  width: 220px;
+  height: 220px;
+  position: relative;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes mover {  
+  from { top: -50%; }
+  to { top: 115%; }
+}
+
+.indicator {
+  display: none;
+  z-index: 4;
+  color: #fff;
+  text-align: center;
+  padding-top: 80%;
+}
+</style>
+
+<script>
+var TIME_LIMIT = 500;
+var startTime;
+
+var produceCircle = function() {
+  var $circle1 = $('<div class="circle" />')
+    .appendTo($('#block1'));
+  setTimeout(function() {
+    $circle1.remove();
+  }, 2000);
+}
+
+$(document).ready(function() {
+
+  var intervalId = setInterval(produceCircle, 1000);
+  var cnt = 0;
+  var beepAudio = document.getElementsByTagName('audio')[0];
+  beepAudio.volume = 0;
+
+  $(document).on('keydown', function() {
+    $('.circle').hide();
+    $('.circle').remove();
+    beepAudio.volume = Math.min(beepAudio.volume + 1/TIME_LIMIT, 1);
+    if (beepAudio.duration > 0 && !beepAudio.paused){
+      beepAudio.pause();
+      beepAudio.currentTime = 0;
+      beepAudio.play();
+    } else {
+      beepAudio.play();  
+    }
+    
+    cnt += 1;
+    console.log(cnt);
+    if (cnt != 0) {
+      $('.highlight').fadeOut('fast');
+
+      if (cnt >= TIME_LIMIT) {
+        console.log('readyyyyy');
+        $('.target').fadeOut('fast');
+        $('.indicator').fadeIn('fast');
+        clearInterval(intervalId);
+        $('video').css('top', '-30%');
+        document.getElementsByTagName('video')[0].play();
+      }
+    }
+
+  });
+
+});
+</script>
+</head>
+
+<body>
+
+<div class="block" id="block1">
+  <div class="wrapper">
+    <div class="indicator"> The car is ready. loading... </div>
+  </div>
+  <div class="target">
+  </div>
+  <div class="circle">
+  </div>
+</div>
+
+<audio>
+  <source src="assets/beep.mp3" type="audio/mpeg">
+  Your browser does not support the audio tag.
+</audio>
+
+</body>
+</html>

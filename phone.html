@@ -1,0 +1,37 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Car control</title>
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.mobile.min.js"></script>
+<script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
+
+<style>
+body {
+  background-color: #000;
+  margin: 0;
+}
+</style>
+
+<script>
+var dataRef = new Firebase('https://hannah-car-simulator.firebaseio.com/');
+
+$(document).ready(function(){
+  $('body').keydown(function() {
+    console.log('msg');
+    var endTime = new Date().getTime();
+    dataRef.update({endTime: endTime, userInterrupt: true});
+  });
+})
+</script>
+</head>
+
+<body>
+</body>
+</html>
