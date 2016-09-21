@@ -130,11 +130,15 @@ $(document).ready(function() {
         $('.target').fadeOut('fast');
         $('.indicator').fadeIn('fast');
         clearInterval(intervalId);
-        $('video').css('top', '-30%');
+        $('video').css('top', '-35%');
         document.getElementsByTagName('video')[0].play();
       }
     }
   }
+
+  $('video').on('click tap', function() {
+    document.getElementsByTagName('video')[0].play();
+  })
 
   $('.block').on('click tap', f);
 
@@ -159,7 +163,7 @@ $(document).ready(function() {
 
 <body>
 
-<video id='container-video' preload='auto'>
+<video id='container-video' preload='auto' autobuffer>
   <source src="assets/video3.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
