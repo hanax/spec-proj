@@ -140,23 +140,19 @@ $(document).ready(function() {
     console.log(snapshot.val())
     if (snapshot.val().userInterrupt && !snapshot.val().userStart) {
       f();
-    } else if (snapshot.val().userInterrupt)  {
+    } else if (snapshot.val().userInterrupt && snapshot.val().userStart)  {
       $('video').fadeOut('fast');
     }
   });
 
-  var playVideo = function() {
-    startTime = new Date().getTime();
-    dataRef.update({startTime: startTime, userStart: true});
-    $('.indicator').fadeOut('fast');
-  }
-
   $('video').on('click', function() {
-    playVideo();
+    document.getElementsByTagName('video')[0].play();
   })
 
   document.getElementsByTagName('video')[0].addEventListener('webkitbeginfullscreen', function() {
-    playVideo();
+    startTime = new Date().getTime();
+    dataRef.update({startTime: startTime, userStart: true, userInterrupt: false});
+    $('.indicator').fadeOut('fast');
   }, false);
 
 });
