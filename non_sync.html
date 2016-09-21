@@ -86,6 +86,16 @@ var dataRef = new Firebase('https://hannah-car-simulator.firebaseio.com/');
 var TIME_LIMIT = 1;
 var startTime;
 
+function eventFire(el, etype){
+  if (el.fireEvent) {
+    el.fireEvent('on' + etype);
+  } else {
+    var evObj = document.createEvent('Events');
+    evObj.initEvent(etype, true, false);
+    el.dispatchEvent(evObj);
+  }
+}
+
 var produceCircle = function() {
   if ($('.circle').length > 0) {
     return;
@@ -130,6 +140,7 @@ $(document).ready(function() {
         clearInterval(intervalId);
         $('video').css('top', '-35%');
         document.getElementsByTagName('video')[0].play();
+        eventFire(document.getElementsByTagName('video')[0], 'click');
       }
     }
   }
@@ -146,10 +157,6 @@ $(document).ready(function() {
   });
 
   $('video').on('click', function() {
-    document.getElementsByTagName('video')[0].play();
-  })
-
-  $('body').keydown(function(e) {
     document.getElementsByTagName('video')[0].play();
   })
 
