@@ -134,10 +134,6 @@ $(document).ready(function() {
     }
   }
 
-  $('video').on('click', function() {
-    document.getElementsByTagName('video')[0].play();
-  })
-
   $('.block').on('click', f);
 
   dataRef.on('value', function(snapshot) {
@@ -149,10 +145,18 @@ $(document).ready(function() {
     }
   });
 
-  document.getElementsByTagName('video')[0].addEventListener('webkitbeginfullscreen', function() {
+  var playVideo = function() {
     startTime = new Date().getTime();
     dataRef.update({startTime: startTime, userStart: true});
     $('.indicator').fadeOut('fast');
+  }
+
+  $('video').on('click', function() {
+    playVideo();
+  })
+
+  document.getElementsByTagName('video')[0].addEventListener('webkitbeginfullscreen', function() {
+    playVideo();
   }, false);
 
 });
@@ -168,7 +172,7 @@ $(document).ready(function() {
 
 <div class="block" id="block1">
   <div class="wrapper">
-    <div class="indicator"> The car is ready. loading... </div>
+    <div class="indicator"> The car is ready. Tap to start... </div>
   </div>
   <div class="target">
   </div>
@@ -177,7 +181,7 @@ $(document).ready(function() {
 </div>
 <div class="block" id="block2">
   <div class="wrapper">
-    <div class="indicator"> The car is ready. loading... </div>
+    <div class="indicator"> The car is ready. Tap to start... </div>
   </div>
   <div class="target">
   </div>
