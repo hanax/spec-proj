@@ -18,35 +18,9 @@ body {
 }
 
 .block {
-  position: relative;
   width: 50vw;
   height: 100vh;
   float: left;
-}
-
-.circle {
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  margin: 0 auto;
-  animation: mover 2s linear infinite;
-  width: 220px;
-  height: 220px;
-  background-color: rgba(255,255,255,.5);
-  border-radius: 50%;
-}
-
-.target {
-  position: absolute;
-  left: 50%;
-  top: 60%;
-  transform: translate(-50%, -50%);
-  margin: 0 auto;
-  width: 200px;
-  height: 200px;
-  /*background-color: rgba(255,255,255,.5);*/
-  border: 3px solid rgba(255,255,255,.8);
-  border-radius: 50%;
 }
 
 .wrapper {
@@ -58,9 +32,38 @@ body {
   transform: translate(-50%, -50%);
 }
 
-@keyframes mover {  
-  from { top: -50%; }
-  to { top: 115%; }
+.tap-cue {
+  z-index: 0;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 220px;
+  height: 220px;
+  background-color: rgba(255,255,255,.3);
+  border-radius: 50%;
+  animation: blinker 1s ease-in-out infinite;
+}
+
+.tap-target {
+  z-index: 1;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  width: 200px;
+  height: 200px;
+  background-color: rgba(255,255,255,.3);
+  border-radius: 50%;
+  transform: all .3s;
+}
+
+.highlight {
+  z-index: 2;
+  display: none;
+  background-color: rgba(255,189,60,.8);
+}
+
+@keyframes blinker {  
+  50% { opacity: 0.0; }
 }
 
 video {
@@ -86,58 +89,39 @@ var dataRef = new Firebase('https://hannah-car-simulator.firebaseio.com/');
 var TIME_LIMIT = 1;
 var startTime;
 
-var produceCircle = function() {
-  if ($('.circle').length > 0) {
-    return;
-  }
-  var $circle1 = $('<div class="circle" />')
-    .appendTo($('#block1'));
-  var $circle2 = $('<div class="circle" />')
-    .appendTo($('#block2'));
-  setTimeout(function() {
-    $circle1.remove();
-    $circle2.remove();
-  }, 2000);
-}
-
 $(document).ready(function() {
-
-  var intervalId = setInterval(produceCircle, 2000);
   dataRef.update({userInterrupt: false, userStart: false});
   var cnt = 0;
   var beepAudio = document.getElementsByTagName('audio')[0];
   beepAudio.volume = 0;
 
-  dataRef.on('value', function(snapshot) {
-    console.log(snapshot.val())
-    if (snapshot.val().userInterrupt && !snapshot.val().userStart) {
-      $('.circle').hide();
-      $('.circle').remove();
-      beepAudio.volume = Math.min(beepAudio.volume + 1/TIME_LIMIT, 1);
-      if (beepAudio.duration > 0 && !beepAudio.paused){
-        beepAudio.pause();
-        beepAudio.currentTime = 0;
-        beepAudio.play();
-      } else {
-        beepAudio.play();  
-      }
-      
-      cnt += 1;
-      console.log(cnt);
-      if (cnt != 0) {
-        $('.highlight').fadeOut('fast');
+  $('.block').on('click', function() {
+    beepAudio.volume = Math.min(beepAudio.volume + 1/TIME_LIMIT, 1);
+    if (beepAudio.duration > 0 && !beepAudio.paused){
+      beepAudio.pause();
+      beepAudio.currentTime = 0;
+      beepAudio.play();
+    } else {
+      beepAudio.play();  
+    }
+    
+    cnt += 1;
+    console.log(cnt);
+    if (cnt != 0) {
+      // $('.highlight').fadeIn('fast', function() {
+      //   $('.highlight').fadeOut('fast');
+      // });
+      $('.highlight').show();
+      $('.highlight').fadeOut('slow');
 
-        if (cnt >= TIME_LIMIT) {
-          console.log('readyyyyy');
-          $('.target').fadeOut('fast');
-          $('.indicator').fadeIn('fast');
-          clearInterval(intervalId);
-          $('video').css('top', '-30%');
-          document.getElementsByTagName('video')[0].play();
-        }
+      if (cnt >= TIME_LIMIT) {
+        console.log('readyyyyy');
+        $('.tap-cue').fadeOut('fast');
+        $('.tap-target').fadeOut('fast');
+        $('.indicator').fadeIn('fast');
+        $('video').css('top', '-30%');
+        document.getElementsByTagName('video')[0].play();
       }
-    } else if (snapshot.val().userInterrupt)  {
-      document.getElementsByTagName('video')[0].pause();
     }
   });
 
@@ -147,6 +131,12 @@ $(document).ready(function() {
     $('.indicator').fadeOut('fast');
   }, false);
 
+  dataRef.on('value', function(snapshot) {
+    if (snapshot.val().userInterrupt) {
+      document.getElementsByTagName('video')[0].pause();
+    }
+  });
+
 });
 </script>
 </head>
@@ -154,26 +144,24 @@ $(document).ready(function() {
 <body>
 
 <video id='container-video' preload='auto'>
-  <source src="assets/video3.mp4" type="video/mp4">
+  <source src="assets/simulatorr.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
-<div class="block" id="block1">
+<div class="block">
   <div class="wrapper">
+    <div class="tap-cue"></div>
+    <div class="tap-target"></div>
+    <div class="tap-target highlight"></div>
     <div class="indicator"> The car is ready. loading... </div>
-  </div>
-  <div class="target">
-  </div>
-  <div class="circle">
   </div>
 </div>
-<div class="block" id="block2">
+<div class="block">
   <div class="wrapper">
+    <div class="tap-cue"></div>
+    <div class="tap-target"></div>
+    <div class="tap-target highlight"></div>
     <div class="indicator"> The car is ready. loading... </div>
-  </div>
-  <div class="target">
-  </div>
-  <div class="circle">
   </div>
 </div>
 
