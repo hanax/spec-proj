@@ -87,6 +87,9 @@ var TIME_LIMIT = 1;
 var startTime;
 
 var produceCircle = function() {
+  if ($('.circle').length > 0) {
+    return;
+  }
   var $circle1 = $('<div class="circle" />')
     .appendTo($('#block1'));
   var $circle2 = $('<div class="circle" />')
