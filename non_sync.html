@@ -141,6 +141,34 @@ $(document).ready(function() {
     }
   });
 
+  $('body').on('click', function() {
+    $('.circle').hide();
+    $('.circle').remove();
+    beepAudio.volume = Math.min(beepAudio.volume + 1/TIME_LIMIT, 1);
+    if (beepAudio.duration > 0 && !beepAudio.paused){
+      beepAudio.pause();
+      beepAudio.currentTime = 0;
+      beepAudio.play();
+    } else {
+      beepAudio.play();  
+    }
+    
+    cnt += 1;
+    console.log(cnt);
+    if (cnt != 0) {
+      $('.highlight').fadeOut('fast');
+
+      if (cnt >= TIME_LIMIT) {
+        console.log('readyyyyy');
+        $('.target').fadeOut('fast');
+        $('.indicator').fadeIn('fast');
+        clearInterval(intervalId);
+        $('video').css('top', '-30%');
+        document.getElementsByTagName('video')[0].play();
+      }
+    }
+  });
+
   document.getElementsByTagName('video')[0].addEventListener('webkitbeginfullscreen', function() {
     startTime = new Date().getTime();
     dataRef.update({startTime: startTime, userStart: true});
