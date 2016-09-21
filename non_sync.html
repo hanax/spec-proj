@@ -121,12 +121,10 @@ $(document).ready(function() {
     }
     
     cnt += 1;
-    console.log(cnt);
     if (cnt != 0) {
       $('.highlight').fadeOut('fast');
 
       if (cnt >= TIME_LIMIT) {
-        console.log('readyyyyy');
         $('.target').fadeOut('fast');
         $('.indicator').fadeIn('fast');
         clearInterval(intervalId);
@@ -136,18 +134,18 @@ $(document).ready(function() {
     }
   }
 
-  $('video').on('click tap', function() {
+  $('video').on('click', function() {
     document.getElementsByTagName('video')[0].play();
   })
 
-  $('.block').on('click tap', f);
+  $('.block').on('click', f);
 
   dataRef.on('value', function(snapshot) {
     console.log(snapshot.val())
     if (snapshot.val().userInterrupt && !snapshot.val().userStart) {
       f();
     } else if (snapshot.val().userInterrupt)  {
-      document.getElementsByTagName('video')[0].pause();
+      $('video').fadeOut('fast');
     }
   });
 

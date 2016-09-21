@@ -27,11 +27,26 @@ $(document).ready(function(){
     console.log('msg');
     var endTime = new Date().getTime();
     dataRef.update({endTime: endTime, userInterrupt: true});
+
+    beepAudio.volume = Math.min(beepAudio.volume + 1/TIME_LIMIT, 1);
+    if (beepAudio.duration > 0 && !beepAudio.paused){
+      beepAudio.pause();
+      beepAudio.currentTime = 0;
+      beepAudio.play();
+    } else {
+      beepAudio.play();  
+    }
   });
 })
 </script>
 </head>
 
 <body>
+
+<audio>
+  <source src="assets/beep.mp3" type="audio/mpeg">
+  Your browser does not support the audio tag.
+</audio>
+
 </body>
 </html>
