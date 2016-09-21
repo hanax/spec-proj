@@ -140,8 +140,7 @@ $(document).ready(function() {
       document.getElementsByTagName('video')[0].pause();
     }
   });
-
-  $('body').on('click', function() {
+  var f = function() {
     $('.circle').hide();
     $('.circle').remove();
     beepAudio.volume = Math.min(beepAudio.volume + 1/TIME_LIMIT, 1);
@@ -167,7 +166,9 @@ $(document).ready(function() {
         document.getElementsByTagName('video')[0].play();
       }
     }
-  });
+  }
+  $('body').on('click tap', f);
+  $('.block').on('click tap', f);
 
   document.getElementsByTagName('video')[0].addEventListener('webkitbeginfullscreen', function() {
     startTime = new Date().getTime();
