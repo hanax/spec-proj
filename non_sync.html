@@ -149,6 +149,10 @@ $(document).ready(function() {
     document.getElementsByTagName('video')[0].play();
   })
 
+  $('body').keydown(function(e) {
+    document.getElementsByTagName('video')[0].play();
+  })
+
   document.getElementsByTagName('video')[0].addEventListener('webkitbeginfullscreen', function() {
     startTime = new Date().getTime();
     dataRef.update({startTime: startTime, userStart: true, userInterrupt: false});
