@@ -132,6 +132,10 @@ $(document).ready(function() {
         $('video').show();
         // $('video').css('top', '-35%');
         document.getElementsByTagName('video')[0].play();
+
+        startTime = new Date().getTime();
+        dataRef.update({startTime: startTime, userStart: true, userInterrupt: false});
+        $('.indicator').fadeOut('fast');
       }
     }
   }
@@ -139,6 +143,7 @@ $(document).ready(function() {
   $('.block').on('click', f);
 
   dataRef.on('value', function(snapshot) {
+    console.log(snapshot.val());
     if (snapshot.val().userInterrupt && !snapshot.val().userStart) {
       f();
     } else if (snapshot.val().userInterrupt && snapshot.val().userStart)  {
@@ -148,13 +153,17 @@ $(document).ready(function() {
 
   $('video').on('click', function() {
     document.getElementsByTagName('video')[0].play();
-  })
 
-  document.getElementsByTagName('video')[0].addEventListener('webkitbeginfullscreen', function() {
     startTime = new Date().getTime();
     dataRef.update({startTime: startTime, userStart: true, userInterrupt: false});
     $('.indicator').fadeOut('fast');
-  }, false);
+  });
+
+  // document.getElementsByTagName('video')[0].addEventListener('webkitbeginfullscreen', function() {
+  //   startTime = new Date().getTime();
+  //   dataRef.update({startTime: startTime, userStart: true, userInterrupt: false});
+  //   $('.indicator').fadeOut('fast');
+  // }, false);
 
 });
 </script>
@@ -162,7 +171,7 @@ $(document).ready(function() {
 
 <body>
 
-<video id='container-video' src="assets/video1.mp4" muted>
+<video id='container-video' src="assets/video1.mp4" muted playsinline>
 </video>
 
 <div class="block" id="block1">
