@@ -49,7 +49,7 @@ $(document).ready(function() {
       document.getElementsByTagName('video')[0].pause();
       console.log('Session 1 take over control time: ');
       console.log(endTime - startTime);
-    } else {
+    } else if (snapshot.val().userInterrupt) {
       console.log(new Date().getTime() - syncStartTime);
     }
   });

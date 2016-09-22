@@ -28,7 +28,7 @@ $(document).ready(function(){
     var endTime = new Date().getTime();
     dataRef.update({endTime: endTime, userInterrupt: true});
 
-    beepAudio.volume = Math.min(beepAudio.volume + 1/TIME_LIMIT, 1);
+    beepAudio.volume = Math.min(beepAudio.volume, 1);
     if (beepAudio.duration > 0 && !beepAudio.paused){
       beepAudio.pause();
       beepAudio.currentTime = 0;
