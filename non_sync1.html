@@ -139,6 +139,7 @@ $(document).ready(function() {
   $('.block').on('click', f);
 
   dataRef.on('value', function(snapshot) {
+    console.log(snapshot.val());
     if (snapshot.val().userInterrupt && !snapshot.val().userStart) {
       f();
     } else if (snapshot.val().userInterrupt && snapshot.val().userStart)  {
@@ -162,7 +163,7 @@ $(document).ready(function() {
 
 <body>
 
-<video id='container-video' src="assets/video1.mp4" muted playsinline>
+<video id='container-video' src="assets/video1.mp4" muted>
 </video>
 
 <div class="block" id="block1">
