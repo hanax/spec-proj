@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>log</title>
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.mobile.min.js"></script>
+<script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
+
+<style>
+
+body {
+  background-color: #000;
+  margin: 0;
+}
+
+video {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+</style>
+
+<script>
+var dataRef = new Firebase('https://hannah-car-simulator.firebaseio.com/');
+
+$(document).ready(function() {
+  dataRef.update({userInterrupt: false, userStart: false});
+  var startTime;
+
+  dataRef.on('value', function(snapshot) {
+    // console.log(snapshot.val())
+    startTime = snapshot.val().startTime;
+    var endTime = snapshot.val().endTime;
+    if (snapshot.val().userInterrupt) {
+      document.getElementsByTagName('video')[0].pause();
+      console.log(endTime - startTime);
+    } else {
+      if (snapshot.val().userStart) {
+        document.getElementsByTagName('video')[0].play();
+      }
+    }
+  });
+
+  // additional timer
+  // $('body').on('click', function() {
+  //   var endTime = new Date().getTime();
+  //   console.log(endTime - startTime);
+  // });
+})
+</script>
+</head>
+
+<body>
+
+<video id='container-video' preload='auto'>
+  <source src="assets/video3.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+</body>
+</html>
