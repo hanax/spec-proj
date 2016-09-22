@@ -139,11 +139,10 @@ $(document).ready(function() {
   $('.block').on('click', f);
 
   dataRef.on('value', function(snapshot) {
-    console.log(snapshot.val())
     if (snapshot.val().userInterrupt && !snapshot.val().userStart) {
       f();
     } else if (snapshot.val().userInterrupt && snapshot.val().userStart)  {
-      // $('video').fadeOut('fast');
+      document.getElementsByTagName('video')[0].pause();
     }
   });
 

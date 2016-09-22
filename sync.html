@@ -64,10 +64,11 @@ body {
 }
 
 video {
-  display: block;
+  display: none;
   z-index: 3;
   position: absolute;
-  top: -100%;
+  /*top: 0;*/
+  /*top: -100%;*/
   width: 100%;
   height: 100%;
 }
@@ -128,7 +129,8 @@ $(document).ready(function() {
         $('.target').fadeOut('fast');
         $('.indicator').fadeIn('fast');
         clearInterval(intervalId);
-        $('video').css('top', '-35%');
+        $('video').show();
+        // $('video').css('top', '-35%');
         document.getElementsByTagName('video')[0].play();
       }
     }
@@ -137,19 +139,14 @@ $(document).ready(function() {
   $('.block').on('click', f);
 
   dataRef.on('value', function(snapshot) {
-    console.log(snapshot.val())
     if (snapshot.val().userInterrupt && !snapshot.val().userStart) {
       f();
     } else if (snapshot.val().userInterrupt && snapshot.val().userStart)  {
-      $('video').fadeOut('fast');
+      document.getElementsByTagName('video')[0].pause();
     }
   });
 
   $('video').on('click', function() {
-    document.getElementsByTagName('video')[0].play();
-  })
-
-  $('body').keydown(function(e) {
     document.getElementsByTagName('video')[0].play();
   })
 
@@ -165,7 +162,7 @@ $(document).ready(function() {
 
 <body>
 
-<video id='container-video' preload='auto' autobuffer>
+<video id='container-video' muted>
   <source src="assets/video3.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
