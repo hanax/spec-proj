@@ -24,7 +24,7 @@ var dataRef = new Firebase('https://hannah-car-simulator.firebaseio.com/');
 
 $(document).ready(function(){
   $('body').keydown(function() {
-    console.log('msg');
+    var beepAudio = document.getElementsByTagName('audio')[0];
     var endTime = new Date().getTime();
     dataRef.update({endTime: endTime, userInterrupt: true});
 
