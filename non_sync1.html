@@ -146,7 +146,7 @@ $(document).ready(function() {
     console.log(snapshot.val());
     if (snapshot.val().userInterrupt && !snapshot.val().userStart) {
       f();
-    } else if (snapshot.val().userInterrupt && snapshot.val().userStart)  {
+    } else if (snapshot.val().userInterrupt && snapshot.val().userStart && new Date().getTime() - snapshot.val().startTime > 2000)  {
       document.getElementsByTagName('video')[0].pause();
     }
   });
