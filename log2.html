@@ -34,20 +34,23 @@ video {
 var dataRef = new Firebase('https://hannah-car-simulator.firebaseio.com/');
 
 $(document).ready(function() {
+  console.log('Session 2 sync activity: ');
   dataRef.update({userInterrupt: false, userStart: false});
-  var startTime;
+  var syncStartTime = new Date().getTime();
 
   dataRef.on('value', function(snapshot) {
     // console.log(snapshot.val())
-    startTime = snapshot.val().startTime;
+    var startTime = snapshot.val().startTime;
     var endTime = snapshot.val().endTime;
-    if (snapshot.val().userInterrupt) {
+
+    if (snapshot.val().userStart && !snapshot.val().userInterrupt) {
+      document.getElementsByTagName('video')[0].play();
+    } else if (snapshot.val().userInterrupt && snapshot.val().userStart && new Date().getTime() - startTime > 2000) {
       document.getElementsByTagName('video')[0].pause();
+      console.log('Session 2 take over control time: ');
       console.log(endTime - startTime);
     } else {
-      if (snapshot.val().userStart) {
-        document.getElementsByTagName('video')[0].play();
-      }
+      console.log(new Date().getTime() - syncStartTime);
     }
   });
 
